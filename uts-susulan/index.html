@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kontrol 4 LED</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .led-cell {
+      aspect-ratio: 1/1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: background 0.4s;
+      border: 1px solid #222;
+    }
+   
+  </style>
+</head>
+<body>
+<div class="container py-4">
+  <div class="row row-cols-2 g-0" style="max-width: 420px; margin: 0 auto;">
+    <!-- Lampu 1 -->
+    <div class="col led-cell bg-light" id="cell-1">
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="switch-1" onchange="toggleLampu(1)">
+        <label class="form-check-label fw-bold" for="switch-1">Lampu 1</label>
+      </div>
+    </div>
+    <!-- Lampu 2 -->
+    <div class="col led-cell bg-light" id="cell-2">
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="switch-2" onchange="toggleLampu(2)">
+        <label class="form-check-label fw-bold" for="switch-2">Lampu 2</label>
+      </div>
+    </div>
+    <!-- Lampu 3 -->
+    <div class="col led-cell bg-light" id="cell-3">
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="switch-3" onchange="toggleLampu(3)">
+        <label class="form-check-label fw-bold" for="switch-3">Lampu 3</label>
+      </div>
+    </div>
+    <!-- Lampu 4 -->
+    <div class="col led-cell bg-light" id="cell-4">
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="switch-4" onchange="toggleLampu(4)">
+        <label class="form-check-label fw-bold" for="switch-4">Lampu 4</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast/Notifikasi -->
+<div class="position-fixed bottom-0 end-0 p-4" style="z-index: 11">
+  <div id="statusToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">
+        Tersimpan!
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function toggleLampu(id) {
+  const checkbox = document.getElementById('switch-' + id);
+  const state = checkbox.checked ? 'ON' : 'OFF';
+  const cell = document.getElementById('cell-' + id);
+
+  // Update background (UI langsung berubah setelah klik)
+  cell.classList.toggle('bg-led-on', state === 'ON');
+  cell.classList.toggle('bg-led-off', state === 'OFF');
+
+  fetch('http://localhost:8080/led/state/' + id, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ state })
+  })
+  .then(response => {
+    if (response.ok) {
+      showToast();
+    } else {
+      throw new Error('Gagal menyimpan');
+    }
+  })
+  .catch(() => {
+    // Jika gagal, bisa tambahkan notifikasi error (contoh sederhana)
+    alert('Gagal melakukan request');
+  });
+}
+
+function showToast() {
+  const toastEl = document.getElementById('statusToast');
+  const toast = new bootstrap.Toast(toastEl);
+  toast.show();
+}
+</script>
+</body>
+</html>
