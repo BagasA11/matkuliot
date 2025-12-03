@@ -13,6 +13,8 @@ func ledRoute(r *gin.RouterGroup) {
 
 	r.POST("/state/:id", lc.UpdateState)
 	r.GET("/state", lc.GetStatus)
+	r.GET("/on", lc.ONAll)
+	r.GET("/off", lc.OFFAll)
 }
 
 func IndexRoute(r *gin.Engine) {

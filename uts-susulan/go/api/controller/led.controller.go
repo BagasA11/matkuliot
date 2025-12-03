@@ -73,3 +73,33 @@ func (ledcontroller *LEDController) GetStatus(ctx *gin.Context) {
 	// return
 
 }
+
+func (ledcontroller *LEDController) ONAll(ctx *gin.Context) {
+	err := ledcontroller.Repo.ONAll()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": "sukses",
+	})
+	// return
+
+}
+
+func (ledcontroller *LEDController) OFFAll(ctx *gin.Context) {
+	err := ledcontroller.Repo.OFFAll()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": "sukses",
+	})
+	// return
+
+}

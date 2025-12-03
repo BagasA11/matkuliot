@@ -1,12 +1,7 @@
-const char* ssid = "WARTEL_DURA";
-const char* password = "DURA8442118";
+const char* ssid = "UDINUS-LSP";
+const char* password = "udinuslsp";
 
-const char* serverName = "http://192.168.1.5:8080/led/state";
-
-
-
-
-
+const char* serverName = "http://192.168.77.77:8080/led/state";
 
 #include <WiFi.h>
 #include <HTTPClient.h>
